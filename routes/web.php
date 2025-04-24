@@ -14,6 +14,6 @@ Route::get('/dashboard', function () {
 Route::get('/resident', [ResidentController::class, 'index']);
 Route::get('/resident/create', [ResidentController::class, 'create']);
 Route::get('/resident/{id}', [ResidentController::class, 'edit']);
-Route::post('/resident', [ResidentController::class, 'store']);
+Route::post('/resident', [ResidentController::class, 'store'])->name('resident.store');
 Route::put('/resident/{id}', [ResidentController::class, 'update']);
 Route::delete('/resident/{id}', [ResidentController::class, 'delete']);
