@@ -35,7 +35,7 @@ class ResidentController extends Controller
             'agama' => 'required|string|max:50',
             'status_menikah' => ['required', Rule::in(['belum_menikah', 'menikah', 'cerai'])],
             'pekerjaan' => 'required|string|max:100',
-            'telepon' => 'required|string|max:15',
+            'telepon' => 'required|string|max:20',
             'status' => Rule::in(['aktif', 'pindah', 'meninggal'])
         ]);
 
@@ -94,7 +94,7 @@ class ResidentController extends Controller
             'agama' => 'required|string|max:50',
             'status_menikah' => ['required', Rule::in(['belum_menikah', 'menikah', 'cerai'])],
             'pekerjaan' => 'required|string|max:100',
-            'telepon' => 'required|string|max:15',
+            'telepon' => 'required|string|max:20',
             'status' => Rule::in(['aktif', 'pindah', 'meninggal'])
         ]);
 
