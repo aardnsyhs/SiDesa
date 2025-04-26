@@ -19,3 +19,7 @@ $(document).ready(function () {
         }
     });
 });
+
+document.getElementById('refresh-captcha').addEventListener('click', function () {
+    document.getElementById('captcha-img').src = captchaUrl + '?' + Math.random();
+});
