@@ -14,6 +14,10 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if (Auth::check()) {
+            return redirect()->intended('dashboard');
+        }
+
         return view('pages.auth.login');
     }
 
@@ -41,7 +45,7 @@ class AuthController extends Controller
         ) {
             $request->session()->regenerate();
 
-            $authUser = Auth::user();
+            $authUser = Auth::user()->load('role');
 
             if ($authUser->status === 'submitted') {
                 Auth::logout();
@@ -58,7 +62,7 @@ class AuthController extends Controller
             if ($authUser->role->name === 'admin') {
                 return redirect()->intended('dashboard');
             } elseif ($authUser->role->name === 'user') {
-                return redirect()->intended('pages.resident');
+                return redirect()->intended('dashboard');
             } else {
                 Auth::logout();
                 return back()->withErrors([
@@ -75,6 +79,10 @@ class AuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        if (!Auth::check()) {
+            return redirect('/');
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -84,6 +92,10 @@ class AuthController extends Controller
 
     public function registerView()
     {
+        if (Auth::check()) {
+            return redirect()->intended('dashboard');
+        }
+
         return view('pages.auth.register');
     }
 

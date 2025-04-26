@@ -18,20 +18,22 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Manajemen Data
-    </div>
+    @if(Auth::user() && Auth::user()->role->name === 'admin')
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Manajemen Data
+        </div>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item {{ request()->is('resident*') ? 'active' : '' }}">
-        <a class="nav-link" href="/resident">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Penduduk</span></a>
-    </li>
+        <!-- Nav Item - Tables -->
+        <li class="nav-item {{ request()->is('resident*') ? 'active' : '' }}">
+            <a class="nav-link" href="/resident">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Penduduk</span></a>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+    @endif
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
