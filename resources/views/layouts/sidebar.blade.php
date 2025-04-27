@@ -30,6 +30,11 @@
                 <i class="fas fa-fw fa-table"></i>
                 <span>Penduduk</span></a>
         </li>
+        <li class="nav-item {{ request()->is('account-request*') ? 'active' : '' }}">
+            <a class="nav-link" href="/account-request">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Permintaan Akun</span></a>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

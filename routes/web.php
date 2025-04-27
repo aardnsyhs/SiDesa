@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ResidentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
@@ -21,4 +22,7 @@ Route::middleware('role:admin')->group(function () {
     Route::post('/resident', [ResidentController::class, 'store'])->name('resident.store');
     Route::put('/resident/{id}', [ResidentController::class, 'update'])->name('resident.update');
     Route::delete('/resident/{id}', [ResidentController::class, 'destroy'])->name('resident.delete');
+
+    Route::get('/account-request', [UserController::class, 'accountRequestView'])->name('account-request.index');
+    Route::post('/account-request/approval/{id}', [UserController::class, 'accountApproval'])->name('account-request.approval');
 });

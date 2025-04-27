@@ -24,6 +24,7 @@
     <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sweetalert2.min.css') }}" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -114,9 +115,13 @@
     <script src="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/script.js') }}"></script>
-
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
+    @if(session('sweetalert'))
+        <script>
+            Swal.fire(@json(session('sweetalert')));
+        </script>
+    @endif
     @yield('scripts')
 </body>
 
