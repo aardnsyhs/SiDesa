@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/sweetalert2.min.css') }}" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-primary">
@@ -106,6 +106,14 @@
         const captchaUrl = "{{ captcha_src() }}";
     </script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+    @if(session('sweetalert'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire(@json(session('sweetalert')));
+            });
+        </script>
+    @endif
 </body>
 
 </html>

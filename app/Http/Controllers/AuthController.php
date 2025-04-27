@@ -17,7 +17,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->intended('dashboard');
         }
-
         return view('pages.auth.login');
     }
 
@@ -48,27 +47,24 @@ class AuthController extends Controller
             $authUser = Auth::user()->load('role');
 
             if ($authUser->status === 'submitted') {
-                Auth::logout();
-                return back()->withErrors([
-                    'general' => 'Akun Anda masih menunggu persetujuan admin.'
+                $this->_logout($request);
+                return redirect()->back()->with('sweetalert', [
+                    'title' => 'Akun Belum Disetujui',
+                    'text' => 'Akun Anda masih menunggu persetujuan admin.',
+                    'icon' => 'info',
+                    'confirmButtonText' => 'Mengerti'
                 ]);
             } elseif ($authUser->status === 'rejected') {
-                Auth::logout();
-                return back()->withErrors([
-                    'general' => 'Akun Anda ditolak admin.'
+                $this->_logout($request);
+                return redirect()->back()->with('sweetalert', [
+                    'title' => 'Akun Ditolak',
+                    'text' => 'Akun Anda ditolak admin.',
+                    'icon' => 'error',
+                    'confirmButtonText' => 'Ok'
                 ]);
             }
 
-            if ($authUser->role->name === 'admin') {
-                return redirect()->intended('dashboard');
-            } elseif ($authUser->role->name === 'user') {
-                return redirect()->intended('dashboard');
-            } else {
-                Auth::logout();
-                return back()->withErrors([
-                    'general' => 'Role tidak dikenali, hubungi administrator.'
-                ]);
-            }
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
@@ -77,18 +73,6 @@ class AuthController extends Controller
     }
 
 
-    public function logout(Request $request): RedirectResponse
-    {
-        if (!Auth::check()) {
-            return redirect('/');
-        }
-
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/')->with('success', 'Anda telah berhasil keluar.');
-    }
 
     public function registerView()
     {
@@ -122,5 +106,23 @@ class AuthController extends Controller
         $user->save();
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Tunggu persetujuan admin.');
+    }
+
+    public function _logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        if (!Auth::check()) {
+            return redirect('/');
+        }
+
+        $this->_logout($request);
+
+        return redirect('/')->with('success', 'Anda telah berhasil keluar.');
     }
 }
