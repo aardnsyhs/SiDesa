@@ -106,17 +106,25 @@ class UserController extends Controller
         ]);
 
         $user = User::findOrFail($userId);
+
+        if ($request->has('email') && $request->input('email') !== $user->email) {
+            return back()->with('sweetalert', [
+                'title' => 'Akses Ditolak',
+                'text' => 'Anda tidak diizinkan mengubah email.',
+                'icon' => 'warning',
+                'confirmButtonText' => 'OK'
+            ]);
+        }
+
         $user->nama = $request->input('nama');
         $user->save();
 
-        $alert = [
+        return back()->with('sweetalert', [
             'title' => 'Berhasil Diperbarui',
             'text' => 'Data profil berhasil diperbarui.',
             'icon' => 'success',
             'confirmButtonText' => 'OK'
-        ];
-
-        return back()->with('sweetalert', $alert);
+        ]);
     }
 
     public function changePasswordView()
