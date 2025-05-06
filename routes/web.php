@@ -29,6 +29,9 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/account-list', [UserController::class, 'accountListView'])->name('account-list.index');
 });
 
-Route::get("/profile", [UserController::class, 'profileView'])->middleware('role:admin,user');
-Route::post("/profile/{id}", [UserController::class, 'updateProfile'])->name('profile.update')->middleware('role:admin,user');
-Route::get("/change-password", [UserController::class, 'changePasswordView'])->middleware('role:admin,user');
+Route::middleware('role:admin,user')->group(function () {
+    Route::get("/profile", [UserController::class, 'profileView']);
+    Route::post("/profile/{id}", [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::get("/change-password", [UserController::class, 'changePasswordView']);
+    Route::post("/change-password/{id}", [UserController::class, 'changePassword'])->name('password.update');
+});

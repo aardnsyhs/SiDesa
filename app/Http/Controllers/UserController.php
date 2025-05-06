@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -123,4 +124,35 @@ class UserController extends Controller
         return view("pages.profile.change-password");
     }
 
+    public function changePassword(Request $request, $userId)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+        ]);
+
+        $user = User::findOrFail($userId);
+
+        if (!Hash::check($request->input('old_password'), $user->password)) {
+            $alert = [
+                'title' => 'Gagal Mengubah Password',
+                'text' => 'Password lama tidak cocok.',
+                'icon' => 'error',
+                'confirmButtonText' => 'OK'
+            ];
+            return back()->with('sweetalert', $alert);
+        }
+
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        $alert = [
+            'title' => 'Berhasil Diperbarui',
+            'text' => 'Password berhasil diperbarui.',
+            'icon' => 'success',
+            'confirmButtonText' => 'OK'
+        ];
+
+        return back()->with('sweetalert', $alert);
+    }
 }
