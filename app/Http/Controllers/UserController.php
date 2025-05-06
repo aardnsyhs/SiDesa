@@ -92,4 +92,35 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
+
+    public function profileView()
+    {
+        return view("pages.profile.index");
+    }
+
+    public function updateProfile(Request $request, $userId)
+    {
+        $request->validate([
+            'nama' => 'required|min:3'
+        ]);
+
+        $user = User::findOrFail($userId);
+        $user->nama = $request->input('nama');
+        $user->save();
+
+        $alert = [
+            'title' => 'Berhasil Diperbarui',
+            'text' => 'Data profil berhasil diperbarui.',
+            'icon' => 'success',
+            'confirmButtonText' => 'OK'
+        ];
+
+        return back()->with('sweetalert', $alert);
+    }
+
+    public function changePasswordView()
+    {
+        return view("pages.profile.change-password");
+    }
+
 }
