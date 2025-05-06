@@ -25,4 +25,6 @@ Route::middleware('role:admin')->group(function () {
 
     Route::get('/account-request', [UserController::class, 'accountRequestView'])->name('account-request.index');
     Route::post('/account-request/approval/{id}', [UserController::class, 'accountApproval'])->name('account-request.approval');
+
+    Route::get('/account-list', [UserController::class, 'accountListView'])->name('account-list.index');
 });
