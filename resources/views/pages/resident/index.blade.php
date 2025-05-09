@@ -35,20 +35,40 @@
                                     {{ $resident->tempat_lahir }}, {{ $resident->tanggal_lahir }}
                                 </td>
                                 <td title="{{ $resident->alamat }}" class="text-truncate">{{ $resident->alamat }}</td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="{{ route('resident.edit', $resident) }}"
-                                            class="d-inline-block mr-2 btn btn-sm btn-warning">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-{{ $resident->id }}">
-                                            <i class="fas fa-eraser"></i>
+                                <td class="text-nowrap">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-light border" type="button"
+                                            id="actionDropdown-{{ $resident->id }}" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
                                         </button>
+                                        <ul class="dropdown-menu" aria-labelledby="actionDropdown-{{ $resident->id }}">
+                                            <li>
+                                                <a href="{{ route('resident.edit', $resident) }}"
+                                                    class="dropdown-item text-warning">
+                                                    <i class="fas fa-pen mr-2"></i>Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item text-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-{{ $resident->id }}">
+                                                    <i class="fas fa-eraser mr-2"></i>Hapus
+                                                </button>
+                                            </li>
+                                            @if(!is_null($resident->user_id))
+                                                <li>
+                                                    <button class="dropdown-item text-info" data-bs-toggle="modal"
+                                                        data-bs-target="#detailAccount-{{ $resident->id }}">
+                                                        <i class="fas fa-user mr-2"></i>Lihat Akun
+                                                    </button>
+                                                </li>
+                                            @endif
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>
                             @include('pages.resident.confirmation-delete')
+                            @include('pages.resident.detail-account')
                         @endforeach
                     </tbody>
                 </table>

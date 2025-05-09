@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Resident;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -13,16 +15,28 @@ class UserController extends Controller
         $users = User::whereHas('role', function ($query) {
             $query->where('name', '!=', 'admin');
         })->get();
+        $residents = Resident::where('user_id', null)->get();
 
         return view('pages.account-request.index', [
             'users' => $users,
+            'residents' => $residents
         ]);
     }
 
     public function accountApproval(Request $request, $id)
     {
+        $request->validate([
+            'for' => ['required', Rule::in(['approve', 'reject', 'activate', 'deactivate'])],
+            'resident_id' => ['nullable', 'exists:residents,id']
+        ]);
         $user = User::findOrFail($id);
         $action = $request->input('for');
+
+        if ($request->filled('resident_id')) {
+            Resident::where('id', $request->resident_id)->update([
+                'user_id' => $user->id,
+            ]);
+        }
 
         $actions = [
             'approve' => [
